@@ -1,0 +1,16 @@
+{
+    "name": "verizxn/vztelegrambot",
+    "description": "Lightweight Telegram webhook bot written in PHP.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "verizxn\\VZTelegramBot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "verizxn"
+        }
+    ],
+    "require": {}
+}
