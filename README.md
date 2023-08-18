@@ -13,7 +13,7 @@ Require this project with [composer](https://getcomposer.org/).
         }
     ],
     "require": {
-        "verizxn/translations": "dev-main"
+        "verizxn/vztelegrambot": "dev-main"
     }
 }
 ```
