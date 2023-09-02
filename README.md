@@ -1,3 +1,5 @@
+![PHP Composer build](https://github.com/verizxn/VZTelegramBot/actions/workflows/php.yml/badge.svg)
+
 # VZTelegramBot
 Lightweight Telegram webhook bot written in PHP.
 
