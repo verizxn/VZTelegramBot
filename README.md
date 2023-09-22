@@ -22,5 +22,6 @@ Require this project with [composer](https://getcomposer.org/).
 Then run in your terminal: `composer update`.
 
 ## Usage
-Check `tests/index.php` for an example code.
+Check `tests/webhook.php` for the webhook example code.
+Check `tests/cli.php` for the command line example code.
 Check Telegram documentation [here](https://core.telegram.org/bots/api).

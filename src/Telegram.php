@@ -6,6 +6,7 @@ class Telegram {
     private $token = '';
     private $endpoint = 'https://api.telegram.org/bot';
     private $logs;
+    private $processed_updates = [];
     
     /**
      * Method __construct
@@ -21,14 +22,27 @@ class Telegram {
     }
     
     /**
+     * Method getWebhookUpdate
+     * 
+     * @return Array
+     */
+    public function getWebhookUpdate(){
+        $update = file_get_contents('php://input');
+        if($this->logs) file_put_contents("{$this->logs}/update.json", $update);
+        $update = json_decode($update, true);
+        return $update;
+    }
+
+    /**
      * Method getUpdate
      * 
      * @return Array
      */
     public function getUpdate(){
-        $update = file_get_contents('php://input');
-        if($this->logs) file_put_contents("{$this->logs}/update.json", $update);
-        $update = json_decode($update, true);
+        $result = $this->request('getUpdates', ['offset' => -1]);
+        $update = $result['result'][0];
+        if(in_array($update['update_id'], $this->processed_updates)) return false;
+        $this->processed_updates[] = $update['update_id'];
         return $update;
     }
         
