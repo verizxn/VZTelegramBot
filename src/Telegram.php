@@ -40,10 +40,12 @@ class Telegram {
      */
     public function getUpdate(){
         $result = $this->request('getUpdates', ['offset' => -1]);
-        $update = $result['result'][0];
+        $update = $result['result'];
+        if(empty($update)) return false;
+        $update = $update[0];
         if(in_array($update['update_id'], $this->processed_updates)) return false;
         $this->processed_updates[] = $update['update_id'];
-        if($this->logs) file_put_contents("{$this->logs}/update.json", $update);
+        if($this->logs) file_put_contents("{$this->logs}/update.json", json_encode($update));
         return $update;
     }
         
