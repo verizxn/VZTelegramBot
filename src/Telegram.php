@@ -43,6 +43,7 @@ class Telegram {
         $update = $result['result'][0];
         if(in_array($update['update_id'], $this->processed_updates)) return false;
         $this->processed_updates[] = $update['update_id'];
+        if($this->logs) file_put_contents("{$this->logs}/update.json", $update);
         return $update;
     }
         

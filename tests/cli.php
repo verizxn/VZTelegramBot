@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$telegram = new \verizxn\VZTelegramBot\Telegram('6623374519:AAFVKOlMqHkDSrIvyhw4yF7DIiQMtMZb1lQ', __DIR__.'/logs');
+$telegram = new \verizxn\VZTelegramBot\Telegram('BOT_TOKEN', __DIR__.'/logs');
 
 while(true){
     $update = $telegram->getUpdate();
