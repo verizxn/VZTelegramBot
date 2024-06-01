@@ -28,7 +28,7 @@ class Telegram {
      */
     public function getWebhookUpdate(){
         $update = file_get_contents('php://input');
-        if($this->logs) file_put_contents("{$this->logs}/update.json", $update);
+        $this->log('update.json', json_encode($update));
         $update = json_decode($update, true);
         return $update;
     }
@@ -40,12 +40,13 @@ class Telegram {
      */
     public function getUpdate(){
         $result = $this->request('getUpdates', ['offset' => -1]);
+        if(!isset($update['result'])) return false;
         $update = $result['result'];
         if(empty($update)) return false;
         $update = $update[0];
         if(in_array($update['update_id'], $this->processed_updates)) return false;
         $this->processed_updates[] = $update['update_id'];
-        if($this->logs) file_put_contents("{$this->logs}/update.json", json_encode($update));
+        $this->log('update.json', json_encode($update));
         return $update;
     }
         
@@ -76,11 +77,16 @@ class Telegram {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $request = curl_exec($ch);
 
-        if($this->logs){
-            file_put_contents("{$this->logs}/log.json", $request);
-            file_put_contents("{$this->logs}/parameters.json", json_encode($parameters));
-        }
+        $this->log('log.json', json_decode($request));
+        $this->log('parameters.json', $parameters);
         $request = json_decode($request, true);
         return $request;
+    }
+
+    private function log($file, $content){
+        if(!$this->logs) return;
+        if(!file_exists($this->logs)) return;
+
+        file_put_contents("{$this->logs}/$file", json_encode($content));
     }
 }
