@@ -40,7 +40,7 @@ class Telegram {
      */
     public function getUpdate(){
         $result = $this->request('getUpdates', ['offset' => -1]);
-        if(!isset($update['result'])) return false;
+        if(!isset($result['result'])) return false;
         $update = $result['result'];
         if(empty($update)) return false;
         $update = $update[0];
