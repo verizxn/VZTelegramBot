@@ -6,7 +6,7 @@ class Telegram {
     private $token = '';
     private $endpoint = 'https://api.telegram.org/bot';
     private $logs;
-    private $processed_updates = [];
+    private $session_path;
     
     /**
      * Method __construct
@@ -16,9 +16,10 @@ class Telegram {
      *
      * @return void
      */
-    public function __construct($token, $logs = false){
+    public function __construct($token, $logs = false, $session_path = false){
         $this->token = $token;
         $this->logs = $logs;
+        $this->session_path = $session_path ? $session_path : getcwd()."/session.json";
     }
     
     /**
@@ -44,8 +45,7 @@ class Telegram {
         $update = $result['result'];
         if(empty($update)) return false;
         $update = $update[0];
-        if(in_array($update['update_id'], $this->processed_updates)) return false;
-        $this->processed_updates[] = $update['update_id'];
+        if($this->parseUpdates($update['update_id'])) return false;
         $this->log('update.json', json_encode($update));
         return $update;
     }
@@ -88,5 +88,16 @@ class Telegram {
         if(!file_exists($this->logs)) return;
 
         file_put_contents("{$this->logs}/$file", json_encode($content));
+    }
+
+    private function parseUpdates($update_id){
+        if(!file_exists($this->session_path)) file_put_contents($this->session_path, '[]');
+        $file = file_get_contents($this->session_path);
+        $updates = json_decode($file, true);
+        if(in_array($update_id, $updates)) return true;
+        $updates[] = $update_id;
+        $updates = json_encode($updates);
+        file_put_contents($this->session_path, $updates);
+        return false;
     }
 }
